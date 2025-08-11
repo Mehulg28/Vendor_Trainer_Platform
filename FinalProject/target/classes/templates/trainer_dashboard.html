@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Trainer Profile</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f0f2f5;
+        }
+
+        .profile-card {
+            background-color: #fff;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            max-width: 600px;
+            margin: auto;
+            position: relative;
+        }
+
+        .edit-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+
+        .profile-photo {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 1rem;
+        }
+
+        .skills-badge {
+            margin: 0.25rem;
+        }
+    </style>
+</head>
+<body>
+
+<!-- ✅ Navbar with Logout -->
+<nav class="navbar navbar-light bg-white shadow-sm px-4">
+    <span class="navbar-brand mb-0 h4">Trainer Dashboard</span>
+    <form th:action="@{/login}" method="get" class="ms-auto">
+        <button class="btn btn-outline-danger btn-sm" type="submit">Logout</button>
+    </form>
+</nav>
+
+<div class="container mt-5">
+    <div class="profile-card text-center">
+        <!-- Edit Profile Button -->
+        <a th:href="@{/trainer/edit}" class="btn btn-outline-primary btn-sm edit-button">Edit Profile</a>
+
+        <!-- Profile Photo -->
+        <img th:src="@{${trainer.photo}}" alt="Profile Photo" class="profile-photo" />
+
+        <!-- Name & Email -->
+        <h3 th:text="${trainer.name}"></h3>
+        <p th:text="${trainer.email}"></p>
+
+        <!-- Location -->
+        <p>
+            <strong>Location:</strong>
+            <span th:text="${trainer.location}"></span>
+        </p>
+
+        <!-- Skills -->
+        <div>
+            <strong>Skills:</strong>
+            <div class="d-flex flex-wrap justify-content-center mt-2">
+                <span class="badge bg-secondary skills-badge" th:each="skill : ${trainer.skills}" th:text="${skill}"></span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Dynamic content depending on approval status -->
+<div th:if="${!trainer.approved}" th:insert="not_approved :: extraContent"></div>
+<div th:if="${trainer.approved}" th:insert="job_dashboard :: extraContent"></div>
+
+<!-- Bootstrap JS Bundle -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

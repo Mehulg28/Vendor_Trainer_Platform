@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Trainer Form</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .form-container {
+            background: #ffffff;
+            padding: 2rem 2.5rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            font-weight: 600;
+        }
+
+        .form-check-label {
+            margin-left: 0.3rem;
+        }
+
+        .top-buttons {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow p-4">
+                <h2 class="text-center mb-4">Trainer Registration</h2>
+                
+	            <!-- Display error message if present -->
+	            <div th:if="${message}" class="alert alert-danger text-center" th:text="${message}"></div>
+
+
+                <form th:action="@{/signup/trainer}" method="post" enctype="multipart/form-data" th:object="${trainer}">
+                    <!-- Name -->
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Name:</label>
+                        <input type="text" th:field="*{name}" class="form-control" required />
+                    </div>
+
+                    <!-- Email -->
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email:</label>
+                        <input type="email" th:field="*{email}" class="form-control" required />
+                    </div>
+
+                    <!-- Password -->
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password:</label>
+                        <input type="password" th:field="*{password}" class="form-control" required />
+                    </div>
+
+                    <!-- Gender -->
+                    <div class="mb-3">
+                        <label class="form-label d-block">Gender:</label>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" th:field="*{gender}" value="Male" />
+                            <label class="form-check-label">Male</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" th:field="*{gender}" value="Female" />
+                            <label class="form-check-label">Female</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" th:field="*{gender}" value="Other" />
+                            <label class="form-check-label">Other</label>
+                        </div>
+                    </div>
+
+		            <div class="mb-3">
+		                <label for="location" class="form-label">Location</label>
+		                <input type="text" class="form-control" id="location" th:field="*{location}" required />
+		            </div>
+		
+		            <div class="mb-3">
+		                <label class="form-label">Skills</label>
+		                <div class="row">
+		                    <div class="col-md-6" th:each="skill : ${skillList}">
+		                        <div class="form-check">
+		                            <input class="form-check-input" type="checkbox"
+		                                   th:id="${'skill_' + skill.name}"
+		                                   th:value="${skill.name}"
+		                                   th:field="*{skills}" />
+		                            <label class="form-check-label" th:for="${'skill_' + skill.name}" th:text="${skill.name}"></label>
+		                            <br>
+		                        </div>
+		                    </div>
+		                </div>
+		            </div>
+
+                    <!-- Photo Upload -->
+                    <div class="mb-3">
+                        <label for="photo" class="form-label">Photo:</label>
+                        <input type="file" name="photoFile" class="form-control" required />
+                    </div>
+
+                    <!-- ID Card Upload -->
+                    <div class="mb-3">
+                        <label for="idCard" class="form-label">ID Card:</label>
+                        <input type="file" name="id_card_File" class="form-control" required />
+                    </div>
+
+                    <!-- Submit -->
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary">Sign Up</button>
+                    </div>
+                    
+                    <div class="text-center mt-3">
+					    <p>Already have an account?</p>
+					    <a href="/login" class="btn btn-outline-secondary">Login</a>
+					</div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

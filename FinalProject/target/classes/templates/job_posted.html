@@ -1,0 +1,49 @@
+<div th:fragment="extraContent">
+    <hr>
+
+    <!-- Post New Job Button -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h5 class="mb-0">Previously Posted Jobs</h5>
+        <a th:href="@{/vendor/dashboard/job-post}" class="btn btn-success btn-sm">
+            + Post New Job
+        </a>
+    </div>
+
+    <div class="row row-cols-1 row-cols-md-2 g-4">
+        <!-- Loop through jobList -->
+        <div class="col" th:each="job : ${vendor.job_postings}">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h6 class="card-title">
+                        Job ID: <span th:text="${job.job_id}"></span>
+                    </h6>
+                    <p class="card-text">
+                        <strong>Location:</strong> 
+                        <span th:text="${job.location}"></span>
+                    </p>
+                    <p class="card-text">
+                        <strong>Duration:</strong> 
+                        <span th:text="${job.duration}"></span>
+                    </p>
+                    <p class="card-text">
+                        <strong>Posted On:</strong> 
+                        <span th:text="${#temporals.format(job.posted_on, 'dd MMM yyyy HH:mm')}"></span>
+                    </p>
+                    <p class="card-text">
+                        <strong>Skills:</strong> 
+                        <span th:each="skill, iterStat : ${job.skills}"
+                              th:text="${skill}"
+                              th:append="${!iterStat.last ? ', ' : ''}"></span>
+                    </p>
+					<p class="card-text" th:if="${job.applicants != null}">
+					    <strong>Applicants:</strong> 
+					    <span th:each="applicant, iterStat : ${job.applicants}"
+					          th:text="${applicant.name}"
+					          th:append="${!iterStat.last ? ', ' : ''}"></span>
+					</p>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

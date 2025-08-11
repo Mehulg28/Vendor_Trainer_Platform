@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>User Approval & Skill Management</title>
+    <!-- Bootstrap CSS CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+<div class="container py-5">
+
+    <!-- Top Right Action Buttons -->
+    <div class="d-flex justify-content-end mb-4">
+        <a href="/trainer/dashboard" class="btn btn-outline-secondary me-2">
+            <i class="bi bi-person-workspace"></i> Switch to Trainer Mode
+        </a>
+        <a href="/login" class="btn btn-outline-danger">
+            <i class="bi bi-box-arrow-right"></i> Logout
+        </a>
+    </div>
+
+    <!-- User Approval Card -->
+    <div class="card shadow-lg mb-5">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0"><i class="bi bi-person-check"></i> User Approval List</h4>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>User Name</th>
+                            <th>Role</th>
+                            <th class="text-center">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody th:if="${!#lists.isEmpty(pendingList)}">
+                        <tr th:each="user : ${pendingList}">
+                            <td th:text="${user.name}">John Doe</td>
+                            <td>
+                                <span class="badge bg-info text-dark" th:text="${user.role}">Trainer</span>
+                            </td>
+                            <td class="text-center">
+                                <a th:href="@{'approve/' + ${user.id}}" 
+                                   class="btn btn-success btn-sm px-3">
+                                    <i class="bi bi-check-circle"></i> Approve
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tbody th:if="${#lists.isEmpty(pendingList)}">
+                        <tr>
+                            <td colspan="3" class="text-center text-muted">No pending approvals</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Skills Management Card -->
+    <div class="card shadow-lg">
+        <div class="card-header bg-success text-white">
+            <h4 class="mb-0"><i class="bi bi-tools"></i> Skills</h4>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered align-middle">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Skill Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="skill : ${skillList}" th:if="${!#lists.isEmpty(skillList)}">
+                            <td th:text="${skill.name}">Java</td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(skillList)}">
+                            <td class="text-center text-muted">No skills available</td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td>
+                                <form th:action="@{skills/add}" method="post" class="d-flex">
+                                    <input type="text" name="skillname" class="form-control me-2"
+                                           placeholder="Enter skill to add (e.g., Java, SQL, Python)" required>
+                                    <button type="submit" class="btn btn-success">
+                                        <i class="bi bi-plus-circle"></i> Add Skill
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Edit Trainer Profile</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .form-container {
+            background-color: #fff;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            max-width: 700px;
+            margin: 2rem auto;
+        }
+
+        .form-title {
+            text-align: center;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+
+        .profile-photo-preview {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 50%;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="form-container">
+        <h3 class="form-title">Edit Profile</h3>
+
+        <!-- Bind the form to Trainer -->
+        <form th:action="@{/trainer/update}" th:object="${trainer}" method="post" enctype="multipart/form-data">
+
+            <!-- Hidden ID field -->
+            <input th:object="${trainer}" type="hidden" th:field="*{id}" />
+            
+            <!-- Profile Photo -->
+			<div class="mb-3 text-center">
+			    <img th:if="*{photo != null}" th:src="@{*{photo}}" alt="Photo" class="profile-photo-preview"/>
+			    <input type="file" class="form-control mt-2" name="photoFile" required/>
+			    <div class="form-text">Upload a new profile photo (optional)</div>
+			</div>
+
+            <!-- Name (from nested User) -->
+            <div class="mb-3">
+                <label class="form-label">Name</label>
+                <input type="text" class="form-control" th:field="*{name}" required />
+            </div>
+
+            <!-- Email (from nested User) -->
+            <div class="mb-3">
+                <label class="form-label">Email</label>
+                <input type="email" class="form-control" th:field="*{email}" required readonly/>
+            </div>
+			
+			<div class="mb-3">
+			    <label class="form-label">Gender</label>
+			    <select class="form-select" th:field="*{gender}" required>
+			        <option value="" disabled>Select Gender</option>
+			        <option value="Male" th:selected="${trainer.gender == 'Male'}">Male</option>
+			        <option value="Female" th:selected="${trainer.gender == 'Female'}">Female</option>
+			        <option value="Other" th:selected="${trainer.gender == 'Other'}">Other</option>
+			    </select>
+			</div>
+
+            <!-- Location (from Trainer) -->
+            <div class="mb-3">
+                <label class="form-label">Location</label>
+                <input type="text" class="form-control" th:field="*{location}" required />
+            </div>
+
+            <!-- Skills (from Trainer) -->
+            <div class="mb-3">
+                <label class="form-label">Skills</label>
+                <div class="row">
+                    <div class="col-md-6" th:each="skill : ${skillList}">
+                        <div th:object="${trainer}" class="form-check">
+                            <input class="form-check-input" type="checkbox"
+                                   th:id="${'skill_' + skill.name}"
+                                   th:value="${skill.name}"
+                                   th:field="*{skills}" />
+                            <label class="form-check-label" th:for="${'skill_' + skill.name}" th:text="${skill.name}"></label>
+                            <br>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Submit -->
+            <div class="d-grid">
+                <button type="submit" class="btn btn-success">Save Changes</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

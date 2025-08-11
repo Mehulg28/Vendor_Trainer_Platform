@@ -1,0 +1,84 @@
+<div th:fragment="extraContent">
+    <hr>
+    <h5 class="mb-3">Available Jobs</h5>
+
+    <div class="row row-cols-1 row-cols-md-2 g-4">
+        <!-- Loop through jobList -->
+        <div class="col" th:each="job : ${jobList}">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h6 class="card-title">
+                        Job ID: <span th:text="${job.job_id}"></span>
+                    </h6>
+                    <p class="card-text">
+                        <strong>Posted By:</strong> 
+                        <span th:text="${job.vendor.name}"></span>
+                    </p>
+                    <p class="card-text">
+                        <strong>Location:</strong> 
+                        <span th:text="${job.location}"></span>
+                    </p>
+                    <p class="card-text">
+                        <strong>Duration:</strong> 
+                        <span th:text="${job.Duration}"></span>
+                    </p>
+                    <p class="card-text">
+                        <strong>Posted On:</strong> 
+                        <span th:text="${job.posted_on}"></span>
+                    </p>
+                    <p class="card-text">
+                        <strong>Skills:</strong> 
+                        <span th:each="skill, iterStat : ${job.skills}"
+                              th:text="${skill}"
+                              th:append="${!iterStat.last ? ', ' : ''}"></span>
+                    </p>
+
+                    <!-- Apply button -->
+                    <div class="mt-3">
+                        <a th:href="@{'apply/' + ${job.job_id}}" 
+                           class="btn btn-primary btn-sm">
+                            Apply
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <h5 class="mb-3">My Applications</h5>
+
+    <div class="row row-cols-1 row-cols-md-2 g-4">
+        <!-- Loop through jobList -->
+        <div class="col" th:each="job : ${trainer.applications}">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h6 class="card-title">
+                        Job ID: <span th:text="${job.job_id}"></span>
+                    </h6>
+                    <p class="card-text">
+                        <strong>Posted By:</strong> 
+                        <span th:text="${job.vendor.name}"></span>
+                    </p>
+                    <p class="card-text">
+                        <strong>Location:</strong> 
+                        <span th:text="${job.location}"></span>
+                    </p>
+                    <p class="card-text">
+                        <strong>Duration:</strong> 
+                        <span th:text="${job.Duration}"></span>
+                    </p>
+                    <p class="card-text">
+                        <strong>Posted On:</strong> 
+                        <span th:text="${job.posted_on}"></span>
+                    </p>
+                    <p class="card-text">
+                        <strong>Skills:</strong> 
+                        <span th:each="skill, iterStat : ${job.skills}"
+                              th:text="${skill}"
+                              th:append="${!iterStat.last ? ', ' : ''}"></span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
